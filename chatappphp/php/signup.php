@@ -37,14 +37,16 @@
 
                         $new_img_name = $time.$img_name;
                         if(move_uploaded_file($tmp_name, "userprofileimage/".$new_img_name )){
-                            $status = "Active Now";
+                            $status = "active";
                             $random_id = rand(time(), 10000000);
                             
                                 $insert_sql = mysqli_query($con, "INSERT INTO `customer`( `unique_id`, `fname`, `lname`, `email`, `password`, `img`, `status`) VALUES ('$random_id','$fname','$lname','$email','$password','$new_img_name','$status')");
 
-                            if($insert_sql){
+                            if($insert_sql)
+                            {
                                 $check_random_id = mysqli_query($con, "SELECT * FROM `customer` WHERE `email` = '$email'");
-                                if(mysqli_num_rows($check_random_id) > 0){
+                                if(mysqli_num_rows($check_random_id) > 0)
+                                {
                                     $row = mysqli_fetch_assoc($check_random_id);
                                     $_SESSION['unique_id'] = $row['unique_id'];
                                     echo "success";

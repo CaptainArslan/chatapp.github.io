@@ -80,7 +80,7 @@ form .name-details .field:last-child{
     transform: translateY(-50%);
     cursor: pointer;
 }
-.form form .field i.active::before{
+.form form .field i.active_eye::before{
     content: "\f070";
     color: #333;
 }
@@ -178,6 +178,9 @@ form .name-details .field:last-child{
     pointer-events: none;
     transition: all 0.3s ease;
     color: #67676a;
+}
+.active{
+    transition: all 0.3s ease;
 }
 .users .search input.active_search{
     opacity: 1;

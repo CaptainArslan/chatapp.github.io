@@ -11,8 +11,14 @@ session_start();
         if(mysqli_num_rows($login_query) > 0)
         {
             $row = mysqli_fetch_assoc($login_query);
-            $_SESSION['unique_id'] = $row['unique_id'];
-            echo "success";
+
+            $status = "active";
+            $sql_active = mysqli_query($con, "UPDATE `customer` SET `status`= '{$status}' WHERE `unique_id` = '{$row['unique_id']}' ");
+            if($sql_active)
+            {
+                $_SESSION['unique_id'] = $row['unique_id'];
+                echo "success";
+            }
         }
         else
         {

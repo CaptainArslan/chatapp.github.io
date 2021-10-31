@@ -1,5 +1,5 @@
 // pASSWORD tOOGLE FUNCTION 
-const password = document.querySelector(".form input[type='password']");
+const password = document.querySelector(".form input[type='password']"),
 togglebtn = document.querySelector(".form .field i");
 
 togglebtn.onclick = () =>{
@@ -7,11 +7,11 @@ togglebtn.onclick = () =>{
     if(password.type == "password")
     {
         password.type = "text";
-        togglebtn.classList.add("active");
+        togglebtn.classList.add("active_eye");
     }
     else
     {
         password.type = "password";
-        togglebtn.classList.remove("active");
+        togglebtn.classList.remove("active_eye");
     }
 }
