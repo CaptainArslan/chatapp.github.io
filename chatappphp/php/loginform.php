@@ -20,6 +20,7 @@ if (strlen($password) < 6) {
 }
 
 // $password = password_hash($password, PASSWORD_DEFAULT);
+$email = strtolower($email);
 
 $login_query = mysqli_query($con, "SELECT * FROM `customer` WHERE `email` = '$email' AND `password` = '$password'");
 if (!mysqli_num_rows($login_query)) {
