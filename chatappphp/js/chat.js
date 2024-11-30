@@ -14,41 +14,52 @@ chatbox.onmouseleave = () =>{
     chatbox.classList.remove("toptobottom");
 }
 
-sendBtn.onclick = () =>{
-    // console.log("Hello World");
-    let xhr = new  XMLHttpRequest();
-    xhr.open("POST", "php/insert-chat.php", true);
-    xhr.onload = () => {
-        if(xhr.readyState === XMLHttpRequest.DONE){
-            if(xhr.status === 200){
-                message.value = ""; //balnk input  once values is inserted
-            }
-        }
-    }
-    let formdata = new FormData(form);
-    xhr.send(formdata);
-}
+sendBtn.onclick = () => {
+    // Collect form data
+    const formData = new FormData(form);
+
+    // Make AJAX request
+    $.ajax({
+        url: "php/insert-chat.php", // Target PHP file
+        type: "POST",
+        data: formData,
+        processData: false, // Prevent jQuery from processing the data
+        contentType: false, // Prevent jQuery from setting content type
+        success: function (response) {
+            // Clear the input field once the value is inserted
+            message.value = "";
+        },
+        error: function (xhr, status, error) {
+            console.error("AJAX Error:", status, error); // Log any errors
+        },
+    });
+};
+
 
 
 setInterval(() => {
-    // console.log("Hello World");
-    let xhr = new XMLHttpRequest();
-    xhr.open("POST", "php/get-chat.php", true);
-    xhr.onload = () => {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                let data = xhr.response;
-                // console.log(data);
-                chatbox.innerHTML = data;
-                if(!chatbox.classList.contains("toptobottom")){
-                    scrollToBottom ();
-                }
+    // Send AJAX request every 1 second
+    $.ajax({
+        url: "php/get-chat.php", // Target PHP file
+        type: "POST",
+        data: new FormData(form),
+        processData: false, // Prevent jQuery from processing the data
+        contentType: false, // Prevent jQuery from setting content type
+        success: function (data) {
+            // Update the chatbox with the response
+            chatbox.innerHTML = data;
+
+            // Scroll to the bottom if not in "toptobottom" mode
+            if (!chatbox.classList.contains("toptobottom")) {
+                scrollToBottom();
             }
-        }
-    }    
-    let formdata = new FormData(form);
-    xhr.send(formdata);
-}, 2000);
+        },
+        error: function (xhr, status, error) {
+            console.error("AJAX Error:", status, error); // Log any errors
+        },
+    });
+}, 1000);
+
 
 function scrollToBottom (){
     chatbox.scrollTop = chatbox.scrollHeight;

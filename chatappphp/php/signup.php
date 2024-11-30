@@ -54,6 +54,7 @@ if (!move_uploaded_file($tmp_name, "userprofileimage/" . $new_img_name)) {
 
 $status = "active";
 $random_id = rand(time(), 10000000);
+// $password = password_hash($password, PASSWORD_DEFAULT);
 
 $insert_sql = mysqli_query($con, "INSERT INTO `customer`
     ( `unique_id`, `fname`, `lname`, `email`, `password`, `img`, `status`) 
