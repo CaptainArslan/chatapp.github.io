@@ -1,34 +1,38 @@
-const login_form = document.querySelector(".login form"),
-continue_btn = login_form.querySelector(".button input"),
-errorText = login_form.querySelector(".error-txt");
+// Select DOM elements
+const login_form = $(".login form");
+const continue_btn = login_form.find(".button input");
+const errorText = login_form.find(".error-txt");
 
-login_form.onsubmit = (e) =>{
+// Prevent default form submission
+login_form.on("submit", (e) => {
     e.preventDefault();
-}
+});
 
-continue_btn.onclick =()=> {
+// Handle button click
+continue_btn.on("click", () => {
+    // Collect form data
+    const formData = new FormData(login_form[0]);
 
-    // console.log("Hello World");
-    let xhr = new  XMLHttpRequest();
-    xhr.open("POST", "php/loginform.php", true);
-    xhr.onload = () => {
-        if(xhr.readyState === XMLHttpRequest.DONE){
-            if(xhr.status === 200){
-                let data = xhr.response;
-                console.log(data);
-                if(data == "success"){
-                    login_form.reset();
-                    location.href = "users.php";
+    // Send AJAX request
+    $.ajax({
+        url: "php/loginform.php",
+        type: "POST",
+        data: formData,
+        processData: false, // Necessary for sending FormData
+        contentType: false, // Necessary for sending FormData
+        success: function (response) {
+            console.log(response); // Log the server response
 
-                }else{
-                   errorText.textContent = data;
-                   errorText.style.display = "block";
-                }
+            if (response === "success") {
+                login_form[0].reset(); // Reset the form
+                window.location.href = "users.php"; // Redirect on success
+            } else {
+                errorText.text(response).css("display", "block"); // Show error message
             }
-        }
-    }
-
-
-    let formdata = new FormData(login_form);
-    xhr.send(formdata);
-}
+        },
+        error: function (xhr, status, error) {
+            console.error("AJAX Error: ", status, error); // Log error details
+            errorText.text("An error occurred. Please try again.").css("display", "block");
+        },
+    });
+});
